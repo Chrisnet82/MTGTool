@@ -37,7 +37,7 @@ public class launcher {
 	private JPanel Schedule_panel;
 	private JPanel Players_panel;
 	private JTable table;
-	private Match match = new Match();
+	private Match match;
 	/**
 	 * Launch the application.
 	 */
@@ -62,6 +62,7 @@ public class launcher {
 	}
 
 	private void isStartKnopAction() {
+		match = new Match();
 		
 	}
 	/**

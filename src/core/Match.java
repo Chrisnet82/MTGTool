@@ -8,7 +8,7 @@ import java.util.TimerTask;
 public class Match {
 	private ArrayList<Player> Players = new ArrayList<Player>();
 	private Timer timer = null;
-	private TimerTask task = new TimerTask();
+//	private TimerTask task = new TimerTask();
 	
 	public String getPlayer(String name) {
 		for(Player player : Players) {
