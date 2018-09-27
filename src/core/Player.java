@@ -1,16 +1,12 @@
 package core;
 
-import java.util.ArrayList;
-
-public class Player {
-	private static int Id = 0;
+public class Player{
 	private String Name = "";
+	private String Seat = "";
 	private int Points = 0;
 	
-	public Player (String name) {
-		this.Id = Id+1;
+	public Player (String name, Group groep) {
 		this.Name = name;
-		this.Points = 0;
 	}
 
 	public String getName() {
@@ -18,8 +14,26 @@ public class Player {
 	}
 
 	public void setName(String name) {
-		Name = name;
+		this.Name = name;
+	}
+
+	public String getSeat() {
+		return Seat;
+	}
+
+	public void setSeat(String seat) {
+		Seat = seat;
 	}
 	
+	public int getPoints() {
+		return Points;
+	}
+
+	public void setPoints(int points) {
+		Points = points;
+	}
 	
+	public String toString() {
+		return Name;
+	}
 }
