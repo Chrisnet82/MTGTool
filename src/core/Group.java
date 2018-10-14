@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class Group {
 	private String name;
 	private ArrayList<Player> Players;
+	private Match match = null;
 	
 	public Group(String name) {
 		this.name = name;
 		Players = new ArrayList<Player>();
+		match = new Match();
 	}
 	
 	public String getName() {
@@ -26,7 +28,11 @@ public class Group {
 		}
 	}
 
-	public ArrayList<String> getAllPlayers() {
+	public ArrayList<Player> getAllPlayers(){
+		return this.Players;
+	}
+	
+	public ArrayList<String> getNames() {
 		ArrayList<String> lijst = new ArrayList<String>();
 		for(Player p : Players) {
 			String e = p.getName();
@@ -35,10 +41,19 @@ public class Group {
 		return lijst;
 	}
 	
-	private ArrayList<Integer> getPlayerPoints() {
+	private ArrayList<Integer> getPoints() {
 		ArrayList<Integer> lijst = new ArrayList<Integer>();
 		for(Player p : Players) {
 			int e = p.getPoints();
+			lijst.add(e);
+		}
+		return lijst;
+	}
+	
+	private ArrayList<String> getSeats() {
+		ArrayList<String> lijst = new ArrayList<String>();
+		for(Player p : Players) {
+			String e = p.getSeat();
 			lijst.add(e);
 		}
 		return lijst;
@@ -54,6 +69,6 @@ public class Group {
 	}
 	
 	public String toString() {
-		return name; // + " - " + Players.toString();
+		return name + " - " + Players.toString();
 	}
 }

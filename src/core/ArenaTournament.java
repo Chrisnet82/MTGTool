@@ -2,20 +2,25 @@ package core;
 
 import java.util.ArrayList;
 
-public class Match {
+public class ArenaTournament {
 	private ArrayList<Group> Group;
 
-	public Match() {
+	public ArenaTournament() {
 		Group = new ArrayList<Group>();
 	}	
+
+	public ArrayList<String> getGroupPlayers(Group p) {
+		return p.getNames();
+	}
 
 	public ArrayList<String> getGroupPlayers(String group){
 		if(!checkGroupName(group)) {
 			for(Group p : Group) {
 				if(p.getName().equals(group)) {
-					return p.getAllPlayers();
+					return p.getNames();
 				}
 			}
+			System.out.println("Groupname: " + "'" + group + "'" + " not found");
 			return null;
 		}else {
 			System.out.println("Error in Groupname: " + "'" + group + "'");
@@ -55,11 +60,10 @@ public class Match {
 					p.addPlayer(playerName, p);
 					System.out.println("Player: " + "'" + playerName + "'" + " added Succesfully to Group: " + p.toString());
 				}
-				else {}
 			}
 		}
 		else {
-			System.out.println("add Player To Group Failed.");
+			System.out.println("Player: " + playerName + " failed to added to the group: " + groupName);
 		}
 	}
 
@@ -79,7 +83,6 @@ public class Match {
 		return false;
 	}
 }
-
 
 //public void addRowtoJTable() {
 //DefaultTableModel model = (DefaultTableModel) jTabelx.getModel();
