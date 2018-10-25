@@ -2,7 +2,7 @@ package core;
 
 public class Round {
 	private int roundNumber = 0;
-	private Group g;
+	private int maxRounds = 0;
 	
 	public Round() {
 		this.roundNumber++;
@@ -16,8 +16,15 @@ public class Round {
 		roundNumber++;		
 	}
 	
+	public void previousRound() {
+		roundNumber--;
+	}
+	
+	public void setMaxRounds(int maxRounds) {
+		this.maxRounds = maxRounds;
+	}
+	
 	public void setScheme(int x) {
-		int playerSize = g.getAllPlayers().size();
 		
 		/*switch (playerSize) {
 		case 1: maxRounds = 0;

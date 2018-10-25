@@ -5,7 +5,7 @@ public class Player{
 	private String Seat = "";
 	private int Points = 0;
 	
-	public Player (String name, Group groep) {
+	public Player (String name) {
 		this.Name = name;
 	}
 

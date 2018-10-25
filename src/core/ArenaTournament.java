@@ -2,81 +2,51 @@ package core;
 
 import java.util.ArrayList;
 
+import exceptions.ArenaException;
+
 public class ArenaTournament {
-	private ArrayList<Group> Group;
+	private ArrayList<Player> players;
 
 	public ArenaTournament() {
-		Group = new ArrayList<Group>();
+		players = new ArrayList<Player>();
 	}	
 
-	public ArrayList<String> getGroupPlayers(Group p) {
-		return p.getNames();
-	}
-
-	public ArrayList<String> getGroupPlayers(String group){
-		if(!checkGroupName(group)) {
-			for(Group p : Group) {
-				if(p.getName().equals(group)) {
-					return p.getNames();
-				}
-			}
-			System.out.println("Groupname: " + "'" + group + "'" + " not found");
-			return null;
-		}else {
-			System.out.println("Error in Groupname: " + "'" + group + "'");
-			return null;	
-		}
-	}
-
-	public ArrayList<String> getAllGroups() {
+	public ArrayList<String> getAllPlayers() {
 		ArrayList<String> lijst = new ArrayList<String>();
-		for(Group g : Group) {
-			String e = g.getName();
+		for(Player p : players) {
+			String e = p.getName();
 			lijst.add(e);
 		}
 		return lijst;
 	}
 
-	public void addGroup(String name) {
-		if(!groupExist(name) && (!checkGroupName(name))) {
-			Group g = new Group(name);
-			Group.add(g);
-		}else{
-			System.out.println("Error in Groupname: " + "'" + name + "'");
-		}
-	}
-
-	public String getGroup(String name) {
-		if(groupExist(name)) {
+	public String getPlayer(String name) {
+		if(playerExist(name)) {
 			return name;
 		}
-		return "Group doenst exist";
+		return "Player doenst exist";
 	}
 
-	public void addPlayerToGroup(String playerName, String groupName) {
-		if(groupExist(groupName) && (!checkGroupName(groupName))) {
-			for(Group p : Group) {
-				if(p.getName().equals(groupName)) {
-					p.addPlayer(playerName, p);
-					System.out.println("Player: " + "'" + playerName + "'" + " added Succesfully to Group: " + p.toString());
-				}
-			}
+	public void addPlayer(String playerName) {
+		Player p = new Player(playerName);
+		if(!playerExist(playerName) && (!checkPlayerName(playerName) && (!playerName.equals("")))) {
+			players.add(p);
 		}
 		else {
-			System.out.println("Player: " + playerName + " failed to added to the group: " + groupName);
+			new ArenaException("Failed to add Player: " + playerName);
 		}
 	}
 
-	private boolean groupExist(String name) {
-		for(Group group : Group) {
-			if(group.getName().equals(name)) {
+	private boolean playerExist(String name) {
+		for(Player p : players) {
+			if(p.getName().equals(name)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean checkGroupName(String name) {
+	private boolean checkPlayerName(String name) {
 		if(name.contains(" ") || name.contains("_")  || name.equals(null)) {
 			return true;
 		}
@@ -84,14 +54,15 @@ public class ArenaTournament {
 	}
 }
 
+
 //public void addRowtoJTable() {
 //DefaultTableModel model = (DefaultTableModel) jTabelx.getModel();
 //ArrayList<Player> pl = Players;
 //Object rowData[] = new Object[3];
 //for(int i = 0; i < pl.size(); i++) {
 //	rowData[0] = list.get(i).id;
-//	rowData[0] = list.get(i).name;
-//	rowData[0] = list.get(i).nogiets;
+//	rowData[1] = list.get(i).name;
+//	rowData[2] = list.get(i).nogiets;
 //	model.addRow(rowData);
 //}
 //}
