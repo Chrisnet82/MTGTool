@@ -8,6 +8,10 @@ public class Round {
 		this.roundNumber++;
 	}
 	
+	public int getMaxRounds() {
+		return maxRounds;
+	}
+	
 	public int getRoundNumber() {
 		return roundNumber;
 	}
@@ -23,20 +27,5 @@ public class Round {
 	public void setMaxRounds(int maxRounds) {
 		this.maxRounds = maxRounds;
 	}
-	
-	public void setScheme(int x) {
-		
-		/*switch (playerSize) {
-		case 1: maxRounds = 0;
-		break;
-		case 2: maxRounds = 1;
-		break;
-		case 3: maxRounds = 2;
-		break;
-		case 4: maxRounds = 3;
-		break;
-		default: maxRounds = 0;
-		break;
-		}*/
-	}
+
 }

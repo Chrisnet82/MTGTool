@@ -1,42 +1,28 @@
 package gui;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-
 import core.ArenaTournament;
+import exceptions.ArenaException;
 
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
 import javax.swing.JButton;
 import java.awt.Font;
-import javax.swing.JMenuBar;
 import javax.swing.JTextField;
 import java.awt.Color;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Panel;
-import java.awt.TextArea;
 
-public class Launcher {
 
+public class Launcher{
 	private JFrame frmMtgTool;
 	private ArenaTournament at;
-	private JTextField createGroupNameField;
 	private JTextField AddPlayerField;
-	private JTextField listPlayer;
-	private JTextField listPlayer2;
+	private JTextArea textArea;
+	private JTextField errorLabel;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -66,21 +52,12 @@ public class Launcher {
 	 */
 	private void initialize() {
 		frmMtgTool = new JFrame();
+		frmMtgTool.getContentPane().setForeground(Color.RED);
 		frmMtgTool.getContentPane().setBackground(Color.WHITE);
 		frmMtgTool.getContentPane().setLayout(null);
 
-		JButton addPlayerButton = new JButton("Add Player");
-		addPlayerButton.setEnabled(true);
-		addPlayerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				addPlayerActionButton();
-			}
-		});
-		addPlayerButton.setBounds(210, 49, 119, 23);
-		frmMtgTool.getContentPane().add(addPlayerButton);
-
 		AddPlayerField = new JTextField();
-		AddPlayerField.setBounds(10, 50, 179, 20);
+		AddPlayerField.setBounds(10, 50, 133, 22);
 		frmMtgTool.getContentPane().add(AddPlayerField);
 		AddPlayerField.setColumns(10);
 
@@ -88,17 +65,57 @@ public class Launcher {
 		lblPlayerList.setBounds(10, 81, 73, 18);
 		frmMtgTool.getContentPane().add(lblPlayerList);
 
-		listPlayer = new JTextField();
-		listPlayer.setEditable(false);
-		listPlayer.setBounds(10, 110, 319, 124);
-		frmMtgTool.getContentPane().add(listPlayer);
-		listPlayer.setColumns(10);
+		textArea = getTextArea();
+
+		JButton roundActionButton = new JButton("Generate Rounds");
+		roundActionButton.setEnabled(false);
+		roundActionButton.setFont(new Font("Calibri", Font.PLAIN, 11));
+		roundActionButton.setBounds(252, 51, 133, 23);
+		frmMtgTool.getContentPane().add(roundActionButton);
+
+		JLabel errorInfo = new JLabel("Error Info Field:");
+		errorInfo.setBounds(10, 11, 119, 22);
+		frmMtgTool.getContentPane().add(errorInfo);
+
+		JButton playerActionButton = new JButton("Add Player");
+		playerActionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				errorLabel.setText("");
+				if(at.getAllPlayers() == null) {
+					roundActionButton.setEnabled(false);
+				}else {
+					roundActionButton.setEnabled(true);
+				}
+				try {
+				addPlayerActionButton();
+				}catch(ArenaException exception) {
+					errorLabel.setText(exception.getMessage());
+				}
+			}
+		});
+		playerActionButton.setFont(new Font("Calibri", Font.PLAIN, 11));
+		playerActionButton.setBounds(153, 50, 89, 23);
+		frmMtgTool.getContentPane().add(playerActionButton);
+
+		JButton clearPlayerList = new JButton("Clear List");
+		clearPlayerList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				errorLabel.setText("");
+				roundActionButton.setEnabled(false);
+				clearListActionButton();				
+			}
+		});
+		clearPlayerList.setFont(new Font("Calibri", Font.PLAIN, 11));
+		clearPlayerList.setBounds(153, 111, 89, 23);
+		frmMtgTool.getContentPane().add(clearPlayerList);
 		
-		listPlayer2 = new JTextField();
-		listPlayer2.setEditable(false);
-		listPlayer2.setColumns(10);
-		listPlayer2.setBounds(10, 245, 319, 124);
-		frmMtgTool.getContentPane().add(listPlayer2);
+		errorLabel = new JTextField();
+		errorLabel.setBackground(Color.WHITE);
+		errorLabel.setFont(new Font("Calibri", Font.PLAIN, 11));
+		errorLabel.setEditable(false);
+		errorLabel.setBounds(156, 12, 623, 20);
+		frmMtgTool.getContentPane().add(errorLabel);
+		errorLabel.setColumns(10);
 
 		frmMtgTool.setTitle("MTG Tool");
 		frmMtgTool.setBackground(new Color(240, 240, 240));
@@ -106,13 +123,38 @@ public class Launcher {
 		frmMtgTool.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	private void addPlayerActionButton() {
+	/**
+	 * This method initializes TextArea
+	 * 
+	 * @return javax.swing.JTextArea
+	 */
+	private JTextArea getTextArea() {
+		if (textArea == null) {
+			textArea = new JTextArea();
+			textArea.setBounds(10, 110, 133, 260);
+			frmMtgTool.getContentPane().add(textArea);
+		}
+		return textArea;
+	}
+
+	private void clearListActionButton() {
+		at.removeAllPlayers();
+		printPlayerList();
+	}
+
+	private void addPlayerActionButton() throws ArenaException {
 		String playerName = AddPlayerField.getText();
 		at.addPlayer(playerName);
-		AddPlayerField.setText("");	
-	    for(String s : at.getAllPlayers()){
-	    	listPlayer2.setText(at.getAllPlayers().toString());
-	    	listPlayer.setText(s);
-	    }
+		printPlayerList();
+		AddPlayerField.setText("");
+	}
+	
+	private void printPlayerList() {
+		Iterator<String> it = at.getAllPlayers().iterator();
+		textArea.setText("");
+		while(it.hasNext()){
+			String element = it.next();
+			textArea.append(element + "\n");
+		}
 	}
 }
