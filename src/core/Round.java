@@ -1,17 +1,17 @@
 package core;
 
+import java.util.ArrayList;
+
 public class Round {
 	private int roundNumber = 0;
-	private int maxRounds = 0;
+	//private int totalMatchPerRound = amount of player / 2;
+	private ArrayList<Match> matches;
 	
 	public Round() {
 		this.roundNumber++;
+		this.matches = new ArrayList<Match>();
 	}
-	
-	public int getMaxRounds() {
-		return maxRounds;
-	}
-	
+		
 	public int getRoundNumber() {
 		return roundNumber;
 	}
@@ -23,9 +23,15 @@ public class Round {
 	public void previousRound() {
 		roundNumber--;
 	}
-	
-	public void setMaxRounds(int maxRounds) {
-		this.maxRounds = maxRounds;
-	}
 
+	public void getMatchId() {
+		
+	}
+	
+	public void addMatch(Player p1, Player p2) {
+		Match match = new Match(p1, p2);
+		matches.add(match);
+	}
+	
+	
 }

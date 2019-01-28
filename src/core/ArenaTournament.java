@@ -1,19 +1,21 @@
 package core;
 
 import java.util.ArrayList;
-
+import java.util.Iterator;
 import exceptions.ArenaException;
 
 public class ArenaTournament {
 	private ArrayList<Player> players;
-	private Round round;
-
+	private ArrayList<Round> rounds;
+	private int maxRounds = 0;
+	private boolean inscriptionsOpen;
+	
 	/*
 	 * Constructor of this Tournament, that generates a empty list of players and a instance of round 1. 
 	 */
 	public ArenaTournament() {
-		players = new ArrayList<Player>();
-		this.round = new Round();
+		this.players = new ArrayList<Player>();
+		this.inscriptionsOpen = true;
 	}	
 
 	/*
@@ -36,27 +38,32 @@ public class ArenaTournament {
 	}
 
 	/*
-	 * Return string of a existing player name.
+	 * Search player list of the given String.
+	 * If it finds a match, gives back the name from the playerlist.
 	 */
 	public String getPlayer(String name) {
-		if(playerExist(name)) {
-			return name;
+		String n = name.toUpperCase().replaceAll("[0-9_ ]", "");
+		Iterator<String> it = getAllPlayers().iterator();
+		while(it.hasNext()) {
+			String playerName = it.next();
+			String n2 = playerName.toUpperCase();
+			if(n.equals(n2)) {
+				return playerName;
+			}
 		}
-		return null;
+		return "Player not found";
 	}
-
+	
 	/*
 	 * Add a player to the player list of this tournament.
 	 * @Var enter String value of the Players name, that can only be letters, and no spaces.
 	 */
 	public void addPlayer(String playerName) throws ArenaException {
-		if(!playerExist(playerName) && (!checkPlayerName(playerName))) {
+		if(!playerExist(playerName) && (!checkPlayerName(playerName)) && (inscriptionsOpen)) {
 			Player p = new Player(playerName);
 			players.add(p);
-		} else if(playerExist(playerName)){
-			throw new ArenaException("Player with this name " + playerName + " already exist.");			
-		}else if(checkPlayerName(playerName)) {
-			throw new ArenaException("The name " + playerName + " is not valid as a name.");
+		}else {
+			throw new ArenaException("Inscription to this tournament isn't open."); 
 		}
 	}
 
@@ -64,28 +71,32 @@ public class ArenaTournament {
 	 * @return the value of the maximum rounds to be played.
 	 */
 	public int getMaxRounds() {
-		return round.getMaxRounds();
+		return maxRounds;
 	}
-
 
 	/*
 	 * AutoSet the maximum rounds of this Tournament.
-	 * Max rounds is determined by the amount of players -1, you cant play yourself.
+	 * Max rounds is determined by the amount of players -1, you can't play yourself.
 	 */
 	private void setMaxRounds() {
-		round.setMaxRounds(players.size()-1);
+		maxRounds = players.size()-1;
 	}
-
-
+	
+	public void closeInscription() {
+        this.inscriptionsOpen = false;
+		this.rounds = new ArrayList<Round>();
+		setMaxRounds();
+	}
+        
 	/*
 	 * Check if the string value is already present in list of players.
-	 * @return true if name is found.
+	 * @return exception if name is found.
 	 * @return false if name isn't found.
 	 */
-	private boolean playerExist(String name) {
+	private boolean playerExist(String name) throws ArenaException {
 		for(Player p : players) {
 			if(p.getName().equals(name)) {
-				return true;
+				throw new ArenaException("Player with name " + name + " already exist.");
 			}
 		}
 		return false;
@@ -93,16 +104,32 @@ public class ArenaTournament {
 
 	/*
 	 * Check if the string name uses right characters.
-	 * @return true if name uses false characters or is a empty string.
+	 * @return exception if name uses false characters or is a empty string.
 	 * @return false is name has no false characters.
 	 */
-	private boolean checkPlayerName(String name) {
-		if(!name.matches("[a-zA-Z]+") || name.contains(" ") || name.equals(null) || name.equals("")) {
-			return true;
+	private boolean checkPlayerName(String name) throws ArenaException {
+		if(!name.matches("[a-zA-Z]+")|| name.contains(" ") || name.equals(null) || name.equals("")) {
+			throw new ArenaException("The name " + name + " is not valid as a name.");
 		}
 		return false;
 	}
-}
+
+	public ArrayList<Round> generateRounds() {
+		ArrayList<Round> list = new ArrayList<Round>();
+		for(int i=0;i<maxRounds;i++) {
+		Round round = new Round();
+		if(round.getRoundNumber() == 1) {
+		round.addMatch(players.get(players.size()), players.get(players.size()-1));
+		round.addMatch(players.get(players.size()-2), players.get(players.size()-3));
+		}else if(round.getRoundNumber() == 2) {
+			
+		}
+		list.add(round);
+		}		
+		return list;
+	}
+	
+}	
 
 //public void addRowtoJTable() {
 //DefaultTableModel model = (DefaultTableModel) jTabelx.getModel();

@@ -2,7 +2,7 @@ package gui;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
-import core.ArenaTournament;
+
 import exceptions.ArenaException;
 
 import javax.swing.JLabel;
@@ -14,6 +14,11 @@ import java.util.Iterator;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+
+import core.ArenaTournament;
+
+import javax.swing.JTextPane;
 
 
 public class Launcher{
@@ -21,7 +26,8 @@ public class Launcher{
 	private ArenaTournament at;
 	private JTextField AddPlayerField;
 	private JTextArea textArea;
-	private JTextField errorLabel;
+	private JTextPane errorLabel;
+	private JTextField RoundGeneratedField;
 	
 	/**
 	 * Launch the application.
@@ -68,20 +74,22 @@ public class Launcher{
 		textArea = getTextArea();
 
 		JButton roundActionButton = new JButton("Generate Rounds");
+		roundActionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent c) {
+				errorLabel.setText("");
+				generateRoundsActionButton();
+			}
+		});
 		roundActionButton.setEnabled(false);
 		roundActionButton.setFont(new Font("Calibri", Font.PLAIN, 11));
 		roundActionButton.setBounds(252, 51, 133, 23);
 		frmMtgTool.getContentPane().add(roundActionButton);
 
-		JLabel errorInfo = new JLabel("Error Info Field:");
-		errorInfo.setBounds(10, 11, 119, 22);
-		frmMtgTool.getContentPane().add(errorInfo);
-
 		JButton playerActionButton = new JButton("Add Player");
 		playerActionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				errorLabel.setText("");
-				if(at.getAllPlayers() == null) {
+				if(at.getAllPlayers().size() < 2) {
 					roundActionButton.setEnabled(false);
 				}else {
 					roundActionButton.setEnabled(true);
@@ -109,13 +117,21 @@ public class Launcher{
 		clearPlayerList.setBounds(153, 111, 89, 23);
 		frmMtgTool.getContentPane().add(clearPlayerList);
 		
-		errorLabel = new JTextField();
+		errorLabel = new JTextPane();
+		errorLabel.setToolTipText("Error message box.");
+		errorLabel.setForeground(Color.RED);
 		errorLabel.setBackground(Color.WHITE);
 		errorLabel.setFont(new Font("Calibri", Font.PLAIN, 11));
 		errorLabel.setEditable(false);
-		errorLabel.setBounds(156, 12, 623, 20);
+		errorLabel.setBounds(10, 12, 769, 20);
 		frmMtgTool.getContentPane().add(errorLabel);
-		errorLabel.setColumns(10);
+		
+		RoundGeneratedField = new JTextField();
+		RoundGeneratedField.setBackground(Color.GRAY);
+		RoundGeneratedField.setEditable(false);
+		RoundGeneratedField.setBounds(252, 112, 305, 337);
+		frmMtgTool.getContentPane().add(RoundGeneratedField);
+		RoundGeneratedField.setColumns(10);
 
 		frmMtgTool.setTitle("MTG Tool");
 		frmMtgTool.setBackground(new Color(240, 240, 240));
@@ -140,8 +156,15 @@ public class Launcher{
 	private void clearListActionButton() {
 		at.removeAllPlayers();
 		printPlayerList();
+	
 	}
 
+
+	private void generateRoundsActionButton() {
+		at.closeInscription();
+		at.generateRounds();
+	}
+	
 	private void addPlayerActionButton() throws ArenaException {
 		String playerName = AddPlayerField.getText();
 		at.addPlayer(playerName);
