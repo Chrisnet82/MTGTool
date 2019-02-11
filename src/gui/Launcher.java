@@ -28,7 +28,7 @@ public class Launcher{
 	private JTextArea textArea;
 	private JTextPane errorLabel;
 	private JTextField RoundGeneratedField;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -95,7 +95,7 @@ public class Launcher{
 					roundActionButton.setEnabled(true);
 				}
 				try {
-				addPlayerActionButton();
+					addPlayerActionButton();
 				}catch(ArenaException exception) {
 					errorLabel.setText(exception.getMessage());
 				}
@@ -116,7 +116,7 @@ public class Launcher{
 		clearPlayerList.setFont(new Font("Calibri", Font.PLAIN, 11));
 		clearPlayerList.setBounds(153, 111, 89, 23);
 		frmMtgTool.getContentPane().add(clearPlayerList);
-		
+
 		errorLabel = new JTextPane();
 		errorLabel.setToolTipText("Error message box.");
 		errorLabel.setForeground(Color.RED);
@@ -125,9 +125,9 @@ public class Launcher{
 		errorLabel.setEditable(false);
 		errorLabel.setBounds(10, 12, 769, 20);
 		frmMtgTool.getContentPane().add(errorLabel);
-		
+
 		RoundGeneratedField = new JTextField();
-		RoundGeneratedField.setBackground(Color.GRAY);
+		RoundGeneratedField.setBackground(Color.WHITE);
 		RoundGeneratedField.setEditable(false);
 		RoundGeneratedField.setBounds(252, 112, 305, 337);
 		frmMtgTool.getContentPane().add(RoundGeneratedField);
@@ -154,24 +154,25 @@ public class Launcher{
 	}
 
 	private void clearListActionButton() {
-		at.removeAllPlayers();
+		at.openInscription();
 		printPlayerList();
-	
+		RoundGeneratedField.setText("");
 	}
-
 
 	private void generateRoundsActionButton() {
+		RoundGeneratedField.setText("");
 		at.closeInscription();
-		at.generateRounds();
+		//at.generateRounds();
+		RoundGeneratedField.setText("This function is under construction.");
 	}
-	
+
 	private void addPlayerActionButton() throws ArenaException {
 		String playerName = AddPlayerField.getText();
 		at.addPlayer(playerName);
 		printPlayerList();
 		AddPlayerField.setText("");
 	}
-	
+
 	private void printPlayerList() {
 		Iterator<String> it = at.getAllPlayers().iterator();
 		textArea.setText("");

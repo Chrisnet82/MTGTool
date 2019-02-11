@@ -9,8 +9,8 @@ public class ArenaTournament {
 	private ArrayList<Round> rounds;
 	private int maxRounds = 0;
 	private boolean inscriptionsOpen;
-	
-	/*
+
+	/**
 	 * Constructor of this Tournament, that generates a empty list of players and a instance of round 1. 
 	 */
 	public ArenaTournament() {
@@ -18,7 +18,7 @@ public class ArenaTournament {
 		this.inscriptionsOpen = true;
 	}	
 
-	/*
+	/**
 	 * Returns the list of players currently in this tournament.
 	 */
 	public ArrayList<String> getAllPlayers() {
@@ -30,14 +30,14 @@ public class ArenaTournament {
 		return lijst;
 	}
 
-	/*
+	/**
 	 * Clears all players in the list of this tournament.
 	 */
-	public void removeAllPlayers() {
+	private void removeAllPlayers() {
 		players.clear();
 	}
 
-	/*
+	/**
 	 * Search player list of the given String.
 	 * If it finds a match, gives back the name from the playerlist.
 	 */
@@ -53,8 +53,8 @@ public class ArenaTournament {
 		}
 		return "Player not found";
 	}
-	
-	/*
+
+	/**
 	 * Add a player to the player list of this tournament.
 	 * @Var enter String value of the Players name, that can only be letters, and no spaces.
 	 */
@@ -67,28 +67,64 @@ public class ArenaTournament {
 		}
 	}
 
-	/*
+	/**
+	 * Werkt DIT?
+	 * @return
+	 */
+	public ArrayList<String> showRounds(){
+		ArrayList<String> lijst = new ArrayList<String>();
+		for(Round r : rounds) {
+			String x = r.toString();
+			lijst.add(x);
+		}
+		return lijst;
+	}
+		
+	
+	/**
 	 * @return the value of the maximum rounds to be played.
 	 */
 	public int getMaxRounds() {
 		return maxRounds;
 	}
 
-	/*
+	/**
 	 * AutoSet the maximum rounds of this Tournament.
 	 * Max rounds is determined by the amount of players -1, you can't play yourself.
 	 */
 	private void setMaxRounds() {
 		maxRounds = players.size()-1;
 	}
+
+	/**
+	 * getter is InscriptionsOpen()?
+	 * @return true if so.
+	 */
+	public boolean isInscriptionsOpen() {
+		return inscriptionsOpen;
+	}
 	
+	/**
+	 * Players are added to tournament and is set to start.
+	 * InscriptionOpen get status 'closed'.
+	 */
 	public void closeInscription() {
-        this.inscriptionsOpen = false;
+		this.inscriptionsOpen = false;
 		this.rounds = new ArrayList<Round>();
 		setMaxRounds();
+		generateRounds();
 	}
-        
-	/*
+
+	/**
+	 * Players are all removed from tournament and is reset.
+	 * InscriptionOpen get status 'Open'.
+	 */
+	public void openInscription() {
+		removeAllPlayers();
+		this.inscriptionsOpen = true;
+	}
+
+	/**
 	 * Check if the string value is already present in list of players.
 	 * @return exception if name is found.
 	 * @return false if name isn't found.
@@ -102,7 +138,7 @@ public class ArenaTournament {
 		return false;
 	}
 
-	/*
+	/**
 	 * Check if the string name uses right characters.
 	 * @return exception if name uses false characters or is a empty string.
 	 * @return false is name has no false characters.
@@ -114,31 +150,44 @@ public class ArenaTournament {
 		return false;
 	}
 
-	public ArrayList<Round> generateRounds() {
-		ArrayList<Round> list = new ArrayList<Round>();
-		for(int i=0;i<maxRounds;i++) {
+	/**
+	 * Creates a list of rounds for 4 players.
+	 * Each round has a internal list of 2 matches.
+	 * @return list with rounds and matches.
+	 */
+	private ArrayList<Round> generateRounds() {
+		this.rounds = new ArrayList<Round>();
 		Round round = new Round();
-		if(round.getRoundNumber() == 1) {
-		round.addMatch(players.get(players.size()), players.get(players.size()-1));
-		round.addMatch(players.get(players.size()-2), players.get(players.size()-3));
-		}else if(round.getRoundNumber() == 2) {
-			
+		int rn = round.getRoundNumber();
+		for(int i=0;i<maxRounds;i++) {		
+			if(rn == 1) {
+				round.addMatch(players.get(0), players.get(1));
+				round.addMatch(players.get(2), players.get(3));
+				System.out.println(round.toString());
+				rounds.add(round);
+				round.nextRound();
+			}else if(rn == 2) {
+				round.addMatch(players.get(0), players.get(2));
+				round.addMatch(players.get(1), players.get(3));
+				rounds.add(round);
+				round.nextRound();
+			}else if(rn == 3) {
+				round.addMatch(players.get(0), players.get(3));
+				round.addMatch(players.get(1), players.get(2));
+				rounds.add(round);
+			}		
 		}
-		list.add(round);
-		}		
-		return list;
-	}
-	
-}	
+		return rounds;
+	}	
 
-//public void addRowtoJTable() {
-//DefaultTableModel model = (DefaultTableModel) jTabelx.getModel();
-//ArrayList<Player> pl = Players;
-//Object rowData[] = new Object[3];
-//for(int i = 0; i < pl.size(); i++) {
-//	rowData[0] = list.get(i).id;
-//	rowData[1] = list.get(i).name;
-//	rowData[2] = list.get(i).nogiets;
-//	model.addRow(rowData);
-//}
-//}
+	//public void addRowtoJTable() {
+	//DefaultTableModel model = (DefaultTableModel) jTabelx.getModel();
+	//ArrayList<Player> pl = Players;
+	//Object rowData[] = new Object[3];
+	//for(int i = 0; i < pl.size(); i++) {
+	//	rowData[0] = list.get(i).id;
+	//	rowData[1] = list.get(i).name;
+	//	rowData[2] = list.get(i).nogiets;
+	//	model.addRow(rowData);
+	//}
+}
