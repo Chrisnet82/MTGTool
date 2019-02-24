@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import exceptions.ArenaException;
 
@@ -107,12 +108,14 @@ public class ArenaTournament {
 	/**
 	 * Players are added to tournament and is set to start.
 	 * InscriptionOpen get status 'closed'.
+	 * @throws ArenaException 
 	 */
-	public void closeInscription() {
+	public void closeInscription() throws ArenaException {
 		this.inscriptionsOpen = false;
 		this.rounds = new ArrayList<Round>();
-		setMaxRounds();
+		checkPlayerSize();
 		AddByePlayerIfNeeded();
+		setMaxRounds();
 		scheduleTournament(players.size(), maxRounds);
 	}
 
@@ -174,7 +177,7 @@ public class ArenaTournament {
 		if(players.size() > 2) {
 			return true;
 		}else {
-			throw new ArenaException("Minimal amount of players needs to be 3.");
+			throw new ArenaException("Minimum number of players needs to be 3.");
 		}
 	}
 	
@@ -193,26 +196,35 @@ public class ArenaTournament {
 	
 	/**
 	 * FOUND ONLINE TESTING: https://sites.google.com/site/mywaydevilsway/round-robin-scheduling-algorithm 
-	 * @param teams = Players.size?
-	 * @param round = amound of rounds?
+	 * @param amountOfPlayers = Players.size?
+	 * @param round = amount of rounds?
 	 */
-	private void scheduleTournament(int teams, int round) {
-		if (((teams%2 != 0) && (round != teams - 1))||(teams <= 0))
+	public void scheduleTournament(int amountOfPlayers, int round) {
+		if (((amountOfPlayers%2 != 0) && (round != amountOfPlayers - 1))||(amountOfPlayers <= 0)) { 
 			throw new IllegalArgumentException();
-		int[] cycle = new int[teams];
-		int n = teams /2;
-		for (int i = 0; i < n; i++) {				
+			}
+		
+		int[] cycle = new int[amountOfPlayers]; //create a integer array the size of the amount of players.
+		int n = amountOfPlayers /2; //= amount of matches per Round.
+		
+		for (int i = 0; i < n; i++) {	
 			cycle[i] = i + 1;
-			cycle[teams - i - 1] = cycle[i] + n;
-		}			
-				
+			cycle[amountOfPlayers - i - 1] = cycle[i] + n;
+		}
+		
 		for(int d = 1; d <= round; d++) {
+/*			HashMap<Integer, String> r = new HashMap<Integer, String>();
+			r.put(d, "Round " + d);*/
 			System.out.println(String.format("Round %d", d));
-			for (int i = 0; i < n; i++) {					
-				System.out.println(String.format("Player %d - Player %d",cycle[i],cycle[teams - i - 1]));					 
-			}	
+			for (int i = 0; i < n; i++) {		
+//				HashMap<String, String> m = new HashMap<String, String>();
+//				m.put("Player " + cycle[i], "Player " + cycle[amountOfPlayers - i - 1]);
+				System.out.println(String.format("Player %d - Player %d",cycle[i],cycle[amountOfPlayers - i - 1]));	
+//				m.toString();
+			}
+			//In player array cycle, we move all players to other positions, except player on index 0:
 			int temp = cycle[1];
-			for (int i = 1; i < teams - 1; i++) {
+			for (int i = 1; i < amountOfPlayers - 1; i++) {
 				int pr = cycle[i+1];
 				cycle[i+1] = temp;
 				temp = pr;
@@ -221,5 +233,4 @@ public class ArenaTournament {
 		}
 	}
 	
-
 }

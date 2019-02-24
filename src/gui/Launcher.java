@@ -77,7 +77,11 @@ public class Launcher{
 		roundActionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent c) {
 				errorLabel.setText("");
-				generateRoundsActionButton();
+				try {
+					generateRoundsActionButton();
+				} catch (ArenaException e) {
+					errorLabel.setText(e.getMessage());
+				}
 			}
 		});
 		roundActionButton.setEnabled(false);
@@ -132,6 +136,11 @@ public class Launcher{
 		RoundGeneratedField.setBounds(252, 112, 305, 337);
 		frmMtgTool.getContentPane().add(RoundGeneratedField);
 		RoundGeneratedField.setColumns(10);
+		
+		JLabel copyRightLabel = new JLabel("Made posible by Chrisnet.nl \u00A9 2019");
+		copyRightLabel.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		copyRightLabel.setBounds(280, 528, 305, 22);
+		frmMtgTool.getContentPane().add(copyRightLabel);
 
 		frmMtgTool.setTitle("MTG Tool");
 		frmMtgTool.setBackground(new Color(240, 240, 240));
@@ -159,11 +168,10 @@ public class Launcher{
 		RoundGeneratedField.setText("");
 	}
 
-	private void generateRoundsActionButton() {
+	private void generateRoundsActionButton() throws ArenaException {
 		RoundGeneratedField.setText("");
-		at.closeInscription();
-		//at.generateRounds();
 		RoundGeneratedField.setText("This function is under construction.");
+		at.closeInscription();
 	}
 
 	private void addPlayerActionButton() throws ArenaException {
