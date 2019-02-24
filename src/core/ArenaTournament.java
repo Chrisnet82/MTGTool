@@ -9,7 +9,8 @@ public class ArenaTournament {
 	private ArrayList<Round> rounds;
 	private int maxRounds = 0;
 	private boolean inscriptionsOpen;
-
+	private int totalMatchPerRound = 0;
+	
 	/**
 	 * Constructor of this Tournament, that generates a empty list of players and a instance of round 1. 
 	 */
@@ -68,14 +69,13 @@ public class ArenaTournament {
 	}
 
 	/**
-	 * Werkt DIT?
+	 * Werkt DIT?, nee!
 	 * @return
 	 */
 	public ArrayList<String> showRounds(){
 		ArrayList<String> lijst = new ArrayList<String>();
 		for(Round r : rounds) {
-			String x = r.toString();
-			lijst.add(x);
+			lijst.add(r.toString());
 		}
 		return lijst;
 	}
@@ -112,7 +112,8 @@ public class ArenaTournament {
 		this.inscriptionsOpen = false;
 		this.rounds = new ArrayList<Round>();
 		setMaxRounds();
-		generateRounds();
+		AddByePlayerIfNeeded();
+		scheduleTournament(players.size(), maxRounds);
 	}
 
 	/**
@@ -144,50 +145,81 @@ public class ArenaTournament {
 	 * @return false is name has no false characters.
 	 */
 	private boolean checkPlayerName(String name) throws ArenaException {
-		if(!name.matches("[a-zA-Z]+")|| name.contains(" ") || name.equals(null) || name.equals("")) {
+		if(!name.matches("[a-zA-Z0-9]+")|| name.contains(" ") || name.equals(null) || name.equals("")) {
 			throw new ArenaException("The name " + name + " is not valid as a name.");
 		}
 		return false;
 	}
 
-	/**
-	 * Creates a list of rounds for 4 players.
-	 * Each round has a internal list of 2 matches.
-	 * @return list with rounds and matches.
-	 */
-	private ArrayList<Round> generateRounds() {
-		this.rounds = new ArrayList<Round>();
-		Round round = new Round();
-		int rn = round.getRoundNumber();
-		for(int i=0;i<maxRounds;i++) {		
-			if(rn == 1) {
-				round.addMatch(players.get(0), players.get(1));
-				round.addMatch(players.get(2), players.get(3));
-				System.out.println(round.toString());
-				rounds.add(round);
-				round.nextRound();
-			}else if(rn == 2) {
-				round.addMatch(players.get(0), players.get(2));
-				round.addMatch(players.get(1), players.get(3));
-				rounds.add(round);
-				round.nextRound();
-			}else if(rn == 3) {
-				round.addMatch(players.get(0), players.get(3));
-				round.addMatch(players.get(1), players.get(2));
-				rounds.add(round);
-			}		
-		}
-		return rounds;
-	}	
 
-	//public void addRowtoJTable() {
-	//DefaultTableModel model = (DefaultTableModel) jTabelx.getModel();
-	//ArrayList<Player> pl = Players;
-	//Object rowData[] = new Object[3];
-	//for(int i = 0; i < pl.size(); i++) {
-	//	rowData[0] = list.get(i).id;
-	//	rowData[1] = list.get(i).name;
-	//	rowData[2] = list.get(i).nogiets;
-	//	model.addRow(rowData);
-	//}
+	/**
+	 * Checks if the amount of players in tournament is uneven.
+	 * If so adds a player "Bye".
+	 */
+	private void AddByePlayerIfNeeded() {
+		if((players.size()%2) == 1) {
+			Player bye = new Player("Bye");
+			bye.setPoints(0);
+			bye.setSeat("Z");
+			players.add(bye);
+		}
+	}
+	
+	/**
+	 * Checks if the amount of players is lager then 2.
+	 * @return
+	 * @throws ArenaException
+	 */
+	private boolean checkPlayerSize() throws ArenaException {
+		if(players.size() > 2) {
+			return true;
+		}else {
+			throw new ArenaException("Minimal amount of players needs to be 3.");
+		}
+	}
+	
+	/**
+	 * Set the integer value of amount of matches in this tournament.
+	 * @return
+	 * @throws ArenaException
+	 */
+	private int setTotalMatchPerRound() throws ArenaException {
+		if(isInscriptionsOpen()) {
+			throw new ArenaException("Inscription must be closed before setting rounds.");
+		}else {
+			return players.size() / 2;
+		}
+	}
+	
+	/**
+	 * FOUND ONLINE TESTING: https://sites.google.com/site/mywaydevilsway/round-robin-scheduling-algorithm 
+	 * @param teams = Players.size?
+	 * @param round = amound of rounds?
+	 */
+	private void scheduleTournament(int teams, int round) {
+		if (((teams%2 != 0) && (round != teams - 1))||(teams <= 0))
+			throw new IllegalArgumentException();
+		int[] cycle = new int[teams];
+		int n = teams /2;
+		for (int i = 0; i < n; i++) {				
+			cycle[i] = i + 1;
+			cycle[teams - i - 1] = cycle[i] + n;
+		}			
+				
+		for(int d = 1; d <= round; d++) {
+			System.out.println(String.format("Round %d", d));
+			for (int i = 0; i < n; i++) {					
+				System.out.println(String.format("Player %d - Player %d",cycle[i],cycle[teams - i - 1]));					 
+			}	
+			int temp = cycle[1];
+			for (int i = 1; i < teams - 1; i++) {
+				int pr = cycle[i+1];
+				cycle[i+1] = temp;
+				temp = pr;
+			}
+			cycle[1] = temp;		
+		}
+	}
+	
+
 }

@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 public class Round {
 	private int roundNumber = 0;
-	//private int totalMatchPerRound = amount of player / 2;
+	private int totalMatchPerRound = 0;
 	private ArrayList<Match> matches;
 	
-	public Round() {
+	public Round(ArrayList<Player> players, int totalMatchPerRound) {
 		this.roundNumber++;
 		this.matches = new ArrayList<Match>();
+		this.totalMatchPerRound = totalMatchPerRound;
 	}
 		
 	public void setRoundNumner(int number) {
@@ -50,7 +51,7 @@ public class Round {
 	}
 	
 	public String toString() {
-		return "" + roundNumber + " " + getAllMatches() + " " + "test";
+		return "" + roundNumber + " " + getAllMatches();
 	}
 	
 }
