@@ -10,8 +10,7 @@ public class ArenaTournament {
 	private ArrayList<Round> rounds;
 	private int maxRounds = 0;
 	private boolean inscriptionsOpen;
-	private int totalMatchPerRound = 0;
-	
+
 	/**
 	 * Constructor of this Tournament, that generates a empty list of players and a instance of round 1. 
 	 */
@@ -70,18 +69,17 @@ public class ArenaTournament {
 	}
 
 	/**
-	 * Werkt DIT?, nee!
+	 * Werkt DIT?, niet wat ik verwacht!! genereerd een lijst met intern rounds, maar toont ze niet!.
 	 * @return
 	 */
-	public ArrayList<String> showRounds(){
+	public ArrayList<String> getRounds(){
 		ArrayList<String> lijst = new ArrayList<String>();
 		for(Round r : rounds) {
 			lijst.add(r.toString());
 		}
 		return lijst;
 	}
-		
-	
+
 	/**
 	 * @return the value of the maximum rounds to be played.
 	 */
@@ -104,7 +102,7 @@ public class ArenaTournament {
 	public boolean isInscriptionsOpen() {
 		return inscriptionsOpen;
 	}
-	
+
 	/**
 	 * Players are added to tournament and is set to start.
 	 * InscriptionOpen get status 'closed'.
@@ -112,11 +110,10 @@ public class ArenaTournament {
 	 */
 	public void closeInscription() throws ArenaException {
 		this.inscriptionsOpen = false;
-		this.rounds = new ArrayList<Round>();
 		checkPlayerSize();
 		AddByePlayerIfNeeded();
 		setMaxRounds();
-		scheduleTournament(players.size(), maxRounds);
+		scheduleTournamentTest(players);
 	}
 
 	/**
@@ -154,7 +151,6 @@ public class ArenaTournament {
 		return false;
 	}
 
-
 	/**
 	 * Checks if the amount of players in tournament is uneven.
 	 * If so adds a player "Bye".
@@ -162,12 +158,10 @@ public class ArenaTournament {
 	private void AddByePlayerIfNeeded() {
 		if((players.size()%2) == 1) {
 			Player bye = new Player("Bye");
-			bye.setPoints(0);
-			bye.setSeat("Z");
 			players.add(bye);
 		}
 	}
-	
+
 	/**
 	 * Checks if the amount of players is lager then 2.
 	 * @return
@@ -180,57 +174,59 @@ public class ArenaTournament {
 			throw new ArenaException("Minimum number of players needs to be 3.");
 		}
 	}
-	
+
 	/**
-	 * Set the integer value of amount of matches in this tournament.
-	 * @return
-	 * @throws ArenaException
+	 * Generates the tournament schedule that lets every player vs other player in this tournament.
+	 * @param players
+	 * @return List of Rounds and Matches.
+	 * @resource https://sites.google.com/site/mywaydevilsway/round-robin-scheduling-algorithm 
 	 */
-	private int setTotalMatchPerRound() throws ArenaException {
-		if(isInscriptionsOpen()) {
-			throw new ArenaException("Inscription must be closed before setting rounds.");
-		}else {
-			return players.size() / 2;
-		}
-	}
-	
-	/**
-	 * FOUND ONLINE TESTING: https://sites.google.com/site/mywaydevilsway/round-robin-scheduling-algorithm 
-	 * @param amountOfPlayers = Players.size?
-	 * @param round = amount of rounds?
-	 */
-	public void scheduleTournament(int amountOfPlayers, int round) {
-		if (((amountOfPlayers%2 != 0) && (round != amountOfPlayers - 1))||(amountOfPlayers <= 0)) { 
+	public ArrayList<Round> scheduleTournamentTest(ArrayList<Player> players) {
+		int amountOfPlayers = players.size();
+		int amountOfRounds = players.size()-1;
+		//ArrayList<Round> roundTest = new ArrayList<Round>();
+		this.rounds = new ArrayList<Round>();
+
+		if (((amountOfPlayers%2 != 0) && (amountOfRounds != amountOfPlayers - 1))||(amountOfPlayers <= 0)) { 
 			throw new IllegalArgumentException();
-			}
-		
-		int[] cycle = new int[amountOfPlayers]; //create a integer array the size of the amount of players.
-		int n = amountOfPlayers /2; //= amount of matches per Round.
-		
-		for (int i = 0; i < n; i++) {	
-			cycle[i] = i + 1;
-			cycle[amountOfPlayers - i - 1] = cycle[i] + n;
 		}
+
+		int[] cycle = new int[amountOfPlayers]; //create a integer array the size of the amount of players.
+		int amountOfMatchesPerRound = amountOfPlayers /2; // amount of matches per Round.
+
+		//set a Array of integers to create list of player ids.
+		for (int i = 0; i < amountOfMatchesPerRound; i++) {	
+			cycle[i] = i + 1;
+			cycle[amountOfPlayers - i - 1] = cycle[i] + amountOfMatchesPerRound;
+		}		
 		
-		for(int d = 1; d <= round; d++) {
-/*			HashMap<Integer, String> r = new HashMap<Integer, String>();
-			r.put(d, "Round " + d);*/
-			System.out.println(String.format("Round %d", d));
-			for (int i = 0; i < n; i++) {		
-//				HashMap<String, String> m = new HashMap<String, String>();
-//				m.put("Player " + cycle[i], "Player " + cycle[amountOfPlayers - i - 1]);
-				System.out.println(String.format("Player %d - Player %d",cycle[i],cycle[amountOfPlayers - i - 1]));	
-//				m.toString();
+		//loop to set every round .
+		for(int d = 1; d <= amountOfRounds; d++) {
+			Round r = new Round(d);
+
+			//set players from the Integer Array list in position
+			ArrayList<Player> newListPlayers = new ArrayList<Player>();	
+			for(int j : cycle) {
+				newListPlayers.add(players.get(j-1));
 			}
-			//In player array cycle, we move all players to other positions, except player on index 0:
+			
+			// Loop in this round loop to set players in Matches.
+			for (int i = 0; i < amountOfMatchesPerRound; i++) {						
+				r.addMatch(newListPlayers.get(i), newListPlayers.get(amountOfPlayers - i - 1));
+			}
+			rounds.add(r);
+
+			//Move integers array around to get players on new positions for next round.
 			int temp = cycle[1];
 			for (int i = 1; i < amountOfPlayers - 1; i++) {
 				int pr = cycle[i+1];
 				cycle[i+1] = temp;
 				temp = pr;
 			}
-			cycle[1] = temp;		
+			cycle[1] = temp;
 		}
+		//System.out.println(rounds.toString());
+		return rounds;
 	}
-	
+
 }

@@ -4,13 +4,11 @@ import java.util.ArrayList;
 
 public class Round {
 	private int roundNumber = 0;
-	private int totalMatchPerRound = 0;
 	private ArrayList<Match> matches;
 	
-	public Round(ArrayList<Player> players, int totalMatchPerRound) {
-		this.roundNumber++;
+	public Round(int roundNumber) {
+		this.roundNumber = roundNumber;
 		this.matches = new ArrayList<Match>();
-		this.totalMatchPerRound = totalMatchPerRound;
 	}
 		
 	public void setRoundNumner(int number) {
@@ -34,9 +32,9 @@ public class Round {
 	}
 	
 	/**
-	 * Returns the list of players currently in this tournament.
+	 * Returns the list of matches and players currently in this round.
 	 */
-	public ArrayList<String> getAllMatches() {
+	private ArrayList<String> getAllMatches() {
 		ArrayList<String> lijst = new ArrayList<String>();
 		for(Match m : matches) {
 			String e = m.toString();
@@ -50,8 +48,13 @@ public class Round {
 		matches.add(match);
 	}
 	
+	public void addMatch(Match m) {
+		matches.add(m);
+	}
+	
+	@Override
 	public String toString() {
-		return "" + roundNumber + " " + getAllMatches();
+		return "Round " + roundNumber + ": " +"\n" + getAllMatches() + "\n";
 	}
 	
 }
