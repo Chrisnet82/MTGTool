@@ -1,7 +1,6 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import exceptions.ArenaException;
 
@@ -68,6 +67,10 @@ public class ArenaTournament {
 		}
 	}
 
+	public String amountOfPlayers() {
+		return "" + players.size();
+	}
+	
 	/**
 	 * Werkt DIT?, niet wat ik verwacht!! genereerd een lijst met intern rounds, maar toont ze niet!.
 	 * @return
