@@ -8,6 +8,7 @@ public class ArenaTournament {
 	private ArrayList<Round> rounds;
 	private int maxRounds = 0;
 	private boolean inscriptionsOpen;
+	private int currentRoundNumber;
 
 	/**
 	 * Constructor of this Tournament, that generates a empty list of players and a instance of round 1. 
@@ -15,6 +16,7 @@ public class ArenaTournament {
 	public ArenaTournament() {
 		this.players = new ArrayList<Player>();
 		this.inscriptionsOpen = true;
+		this.currentRoundNumber = 1;
 	}	
 
 	/**
@@ -80,6 +82,21 @@ public class ArenaTournament {
 			lijst.add(r.toString());
 		}
 		return lijst;
+	}
+	
+	/**
+	 * Returns Matches of given Roundnumber.
+	 * @param RoundNumber
+	 * @return
+	 */
+	public ArrayList<String> getMatches(int RoundNumber){
+		ArrayList<String> list = new ArrayList<String>();
+		for(Round r : rounds) {
+			if(r.getRoundNumber() == RoundNumber) {
+				list.addAll(r.getAllMatches());
+			}
+		}
+		return list;
 	}
 
 	/**

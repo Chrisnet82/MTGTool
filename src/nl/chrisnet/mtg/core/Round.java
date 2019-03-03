@@ -34,7 +34,7 @@ public class Round {
 	/**
 	 * Returns the list of matches and players currently in this round.
 	 */
-	private ArrayList<String> getAllMatches() {
+	public ArrayList<String> getAllMatches() {
 		ArrayList<String> lijst = new ArrayList<String>();
 		for(Match m : matches) {
 			String e = m.toString();
