@@ -23,14 +23,16 @@ import java.awt.Cursor;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.awt.TextArea;
+import java.awt.TextField;
 
 public class Launcher{
+	private JTextArea roundGeneratedField;
 	private JFrame frmMtgTool;
 	private ArenaTournament at;
 	private JTextField AddPlayerField;
 	private JTextArea textArea;
 	private JTextPane errorLabel;
-	private JTextArea RoundGeneratedField;
 	private JTextField amountPlayersTextField;
 	private JTable tablePoints;
 	private JTable tableMatches;
@@ -85,7 +87,7 @@ public class Launcher{
 		roundActionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent c) {
 				errorLabel.setText("");
-				
+
 				try {
 					generateRoundsActionButton();
 				} catch (ArenaException e) {
@@ -142,18 +144,27 @@ public class Launcher{
 		errorLabel.setBackground(Color.WHITE);
 		errorLabel.setFont(new Font("Calibri", Font.PLAIN, 11));
 		errorLabel.setEditable(false);
-		frmMtgTool.getContentPane().add(errorLabel);
-		
-				RoundGeneratedField = new JTextArea();
-				RoundGeneratedField.setBounds(252, 102, 418, 351);
-				frmMtgTool.getContentPane().add(RoundGeneratedField);
-				RoundGeneratedField.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-				RoundGeneratedField.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				RoundGeneratedField.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.CYAN, null));
-				RoundGeneratedField.setBackground(Color.WHITE);
-				RoundGeneratedField.setEditable(false);
-				RoundGeneratedField.setColumns(10);
-		
+		tableMatches = new JTable();
+		tableMatches.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.CYAN, null));
+		tableMatches.setRowSelectionAllowed(false);
+		tableMatches.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"Round#", "Player 1", "Player 2", "Score"
+				}
+				) {
+			Class[] columnTypes = new Class[] {
+					Integer.class, String.class, String.class, Integer.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		tableMatches.setFont(new Font("Times New Roman", Font.PLAIN, 11));
+		tableMatches.setBounds(252, 103, 417, 241);
+		frmMtgTool.getContentPane().add(tableMatches);
+
 		tablePoints = new JTable();
 		tablePoints.setBounds(722, 100, 152, 350);
 		frmMtgTool.getContentPane().add(tablePoints);
@@ -161,51 +172,31 @@ public class Launcher{
 				new Object[][] {
 				},
 				new String[] {
-					"Player", "Points"
+						"Player", "Points"
 				}
-			) {
-				Class[] columnTypes = new Class[] {
-					String.class, Integer.class
-				};
-				public Class getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
-				}
-			});
-		tablePoints.setCellSelectionEnabled(true);
-		tablePoints.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.CYAN, null));
-		tablePoints.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		tablePoints.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		
-		tableMatches = new JTable();
-		tableMatches.setRowSelectionAllowed(false);
-		tableMatches.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Round#", "Player 1", "Player 2", "Score"
-			}
-		) {
+				) {
 			Class[] columnTypes = new Class[] {
-				Integer.class, String.class, String.class, Integer.class
+					String.class, Integer.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 		});
-		tableMatches.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		tableMatches.setBounds(252, 138, 417, 350);
-		frmMtgTool.getContentPane().add(tableMatches);
-		
+		tablePoints.setCellSelectionEnabled(true);
+		tablePoints.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.CYAN, null));
+		tablePoints.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		tablePoints.setFont(new Font("Times New Roman", Font.PLAIN, 11));
+
 		JLabel copyRightLabel = new JLabel("Made posible by Chrisnet.nl \u00A9 2019");
 		copyRightLabel.setBounds(280, 528, 305, 22);
 		copyRightLabel.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		frmMtgTool.getContentPane().add(copyRightLabel);
-		
+
 		JLabel lblNewLabel = new JLabel("Total Players:");
 		lblNewLabel.setBounds(10, 381, 81, 14);
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		frmMtgTool.getContentPane().add(lblNewLabel);
-		
+
 		amountPlayersTextField = new JTextField();
 		amountPlayersTextField.setBounds(84, 378, 59, 20);
 		amountPlayersTextField.setText("0");
@@ -215,6 +206,16 @@ public class Launcher{
 		amountPlayersTextField.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		frmMtgTool.getContentPane().add(amountPlayersTextField);
 		amountPlayersTextField.setColumns(10);
+		
+		roundGeneratedField = new JTextArea();
+		roundGeneratedField.setBounds(252, 343, 418, 110);
+		roundGeneratedField.setFont(new Font("Times New Roman", Font.PLAIN, 11));
+		roundGeneratedField.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		roundGeneratedField.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.CYAN, null));
+		roundGeneratedField.setBackground(Color.WHITE);
+		roundGeneratedField.setEditable(false);
+		roundGeneratedField.setColumns(10);
+		frmMtgTool.getContentPane().add(roundGeneratedField);
 		frmMtgTool.setTitle("Chrisnet - MTG Tool");
 		frmMtgTool.setBackground(new Color(240, 240, 240));
 		frmMtgTool.setBounds(450, 100, 900, 600);
@@ -241,32 +242,42 @@ public class Launcher{
 	private void clearListActionButton() {
 		at.openInscription();
 		printPlayerList();
-		RoundGeneratedField.setText("");
+		roundGeneratedField.setText("");
 		AddPlayerField.setText("");
 		amountPlayersTextField.setText(at.amountOfPlayers()+"");
 		DefaultTableModel model = (DefaultTableModel) tablePoints.getModel();
+		DefaultTableModel model2 = (DefaultTableModel) tableMatches.getModel();
 		model.setRowCount(0);
+		model2.setRowCount(0);
 	}
 
 	private void genTablePoints() {
-		int x = at.amountOfPlayers();
-//		int selectedRowIndex = tablePoints.getSelectedRow();
 		DefaultTableModel model = (DefaultTableModel) tablePoints.getModel();
 		model.setRowCount(0);
-		
-		for(int i=0;i<=x;i++) {
+
+		for(int i=0;i<=at.amountOfPlayers()-1;i++) {
 			String playerName = at.getAllPlayers().get(i);
 			int playerPloints = at.getPlayerPoints(playerName);
 			model.addRow(new Object[]{playerName, playerPloints+""});
 		}
-	}						
+	}				
+	
+	private void genTableMatches() {
+		//int selectedRowIndex = tableMatches.getSelectedRow();
+		DefaultTableModel model2 = (DefaultTableModel) tableMatches.getModel();
+
+		for(int i=0;i<at.getMaxRounds();i++) {
+			model2.addRow(new Object[] {"Round "+ (i+1),at.getMatches(i), 0, 0});
+		}
+	}
 	
 	private void generateRoundsActionButton() throws ArenaException {
-		RoundGeneratedField.setText("");
+		roundGeneratedField.setText("");
 		at.closeInscription();
 		printSchedual();
 		AddPlayerField.setText("");
-		genTablePoints();
+		genTableMatches();
+		genTablePoints();		
 	}
 
 	private void addPlayerActionButton() throws ArenaException {
@@ -280,13 +291,13 @@ public class Launcher{
 
 	private void printSchedual() {
 		Iterator<String> it = at.getRounds().iterator();
-		RoundGeneratedField.setText("");
+		roundGeneratedField.setText("");
 		while(it.hasNext()){
 			String element = it.next();
-			RoundGeneratedField.append(element + "\n");
+			roundGeneratedField.append(element + "\n");
 		}
 	}
-	
+
 	private void printPlayerList() {
 		Iterator<String> it = at.getAllPlayers().iterator();
 		textArea.setText("");

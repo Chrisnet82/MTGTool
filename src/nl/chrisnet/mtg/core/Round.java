@@ -10,25 +10,16 @@ public class Round {
 		this.roundNumber = roundNumber;
 		this.matches = new ArrayList<Match>();
 	}
-		
-	public void setRoundNumner(int number) {
-		this.roundNumber = number;
-	}
-	
+			
 	public int getRoundNumber() {
 		return roundNumber;
 	}
 
-	public void nextRound() {
-		roundNumber = roundNumber + 1;		
-	}
-	
-	public void previousRound() {
-		roundNumber--;
-	}
-
-	public void getMatchId() {
-		
+	public String getMatch(int index) {
+		if(index < matches.size()) {
+		return matches.get(index).toString();
+		}
+		return null;
 	}
 	
 	/**
@@ -51,7 +42,7 @@ public class Round {
 	public void addMatch(Match m) {
 		matches.add(m);
 	}
-	
+		
 	@Override
 	public String toString() {
 		return "Round " + roundNumber + ": " +"\n" + getAllMatches() + "\n";

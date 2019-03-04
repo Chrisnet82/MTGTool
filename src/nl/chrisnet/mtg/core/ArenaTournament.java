@@ -92,6 +92,16 @@ public class ArenaTournament {
 		}
 		return lijst;
 	}
+	
+	
+	public String getMatch(int roundNumber, int index) {
+		for(Round r : rounds) {
+			if(r.getRoundNumber() == roundNumber) {
+				return r.getMatch(index);
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Returns Matches of given Roundnumber.
@@ -115,6 +125,11 @@ public class ArenaTournament {
 		return maxRounds;
 	}
 
+	public int getRoundNumber() {
+		return currentRoundNumber;
+	}
+
+	
 	/**
 	 * AutoSet the maximum rounds of this Tournament.
 	 * Max rounds is determined by the amount of players -1, you can't play yourself.

@@ -35,7 +35,7 @@ public class Match {
 
 	@Override
 	public String toString() {
-		return "" + getPlayer1().getName() + " vs " + getPlayer2().getName() + "\n";
+		return "" + getPlayer1().getName() + " vs " + getPlayer2().getName();
 	}
 	
 }
