@@ -85,6 +85,7 @@ public class Launcher{
 		roundActionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent c) {
 				errorLabel.setText("");
+				
 				try {
 					generateRoundsActionButton();
 				} catch (ArenaException e) {
@@ -243,21 +244,21 @@ public class Launcher{
 		RoundGeneratedField.setText("");
 		AddPlayerField.setText("");
 		amountPlayersTextField.setText(at.amountOfPlayers()+"");
+		DefaultTableModel model = (DefaultTableModel) tablePoints.getModel();
+		model.setRowCount(0);
 	}
 
 	private void genTablePoints() {
 		int x = at.amountOfPlayers();
-		int selectedRowIndex = tablePoints.getSelectedRow();
-		
-		Object[][] data = new Object[x][x];
+//		int selectedRowIndex = tablePoints.getSelectedRow();
 		DefaultTableModel model = (DefaultTableModel) tablePoints.getModel();
+		model.setRowCount(0);
 		
 		for(int i=0;i<=x;i++) {
 			String playerName = at.getAllPlayers().get(i);
 			int playerPloints = at.getPlayerPoints(playerName);
 			model.addRow(new Object[]{playerName, playerPloints+""});
 		}
-		model.addRow(data);
 	}						
 	
 	private void generateRoundsActionButton() throws ArenaException {
