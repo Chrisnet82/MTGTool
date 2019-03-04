@@ -42,7 +42,7 @@ public class ArenaTournament {
 	 * Search player list of the given String.
 	 * If it finds a match, gives back the name from the playerlist.
 	 */
-	public String getPlayer(String name) {
+	public String findPlayer(String name) {
 		String n = name.toUpperCase().replaceAll("[0-9_ ]", "");
 		Iterator<String> it = getAllPlayers().iterator();
 		while(it.hasNext()) {
@@ -55,6 +55,24 @@ public class ArenaTournament {
 		return "Player not found";
 	}
 
+	public String printPlayer1(int round, int matchIndex) {
+		for(Round r : rounds) {
+			if(r.getRoundNumber() == round) {
+					return r.printPlayer1Name(matchIndex);	
+				}
+			}
+		return null;
+		}
+
+	public String printPlayer2(int round, int matchIndex) {
+		for(Round r : rounds) {
+			if(r.getRoundNumber() == round) {
+					return r.printPlayer2Name(matchIndex);	
+				}
+			}
+		return null;
+		}
+	
 	/**
 	 * Add a player to the player list of this tournament.
 	 * @Var enter String value of the Players name, that can only be letters, and no spaces.

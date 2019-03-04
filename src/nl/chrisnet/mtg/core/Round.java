@@ -43,6 +43,14 @@ public class Round {
 		matches.add(m);
 	}
 		
+	public String printPlayer1Name(int matchIndex) {
+		return matches.get(matchIndex).getPlayer1().getName();
+	}
+	
+	public String printPlayer2Name(int matchIndex) {
+		return matches.get(matchIndex).getPlayer2().getName();
+	}
+	
 	@Override
 	public String toString() {
 		return "Round " + roundNumber + ": " +"\n" + getAllMatches() + "\n";

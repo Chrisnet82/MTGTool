@@ -265,9 +265,10 @@ public class Launcher{
 	private void genTableMatches() {
 		//int selectedRowIndex = tableMatches.getSelectedRow();
 		DefaultTableModel model2 = (DefaultTableModel) tableMatches.getModel();
-
+		model2.setRowCount(0);
+		
 		for(int i=0;i<at.getMaxRounds();i++) {
-			model2.addRow(new Object[] {"Round "+ (i+1),at.getMatches(i), 0, 0});
+			model2.addRow(new Object[] {"Round "+ (i+1), at.printPlayer1(i+1, i), at.printPlayer2(i+1, i), 0});
 		}
 	}
 	
