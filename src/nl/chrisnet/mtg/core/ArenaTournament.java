@@ -68,8 +68,17 @@ public class ArenaTournament {
 		}
 	}
 
-	public String amountOfPlayers() {
-		return "" + players.size();
+	public int amountOfPlayers() {
+		return players.size();
+	}
+
+	public int getPlayerPoints(String playerName) {
+		for(Player p : players) {
+			if(p.getName() == playerName) {
+				return p.getPoints();
+			}
+		}
+		return 0;
 	}
 	
 	/**
@@ -83,7 +92,7 @@ public class ArenaTournament {
 		}
 		return lijst;
 	}
-	
+
 	/**
 	 * Returns Matches of given Roundnumber.
 	 * @param RoundNumber
@@ -203,7 +212,7 @@ public class ArenaTournament {
 	public ArrayList<Round> scheduleTournamentTest(ArrayList<Player> players) {
 		int amountOfPlayers = players.size();
 		int amountOfRounds = players.size()-1;
-		
+
 		this.rounds = new ArrayList<Round>();
 
 		if (((amountOfPlayers%2 != 0) && (amountOfRounds != amountOfPlayers - 1))||(amountOfPlayers <= 0)) { 
@@ -218,7 +227,7 @@ public class ArenaTournament {
 			cycle[i] = i + 1;
 			cycle[amountOfPlayers - i - 1] = cycle[i] + amountOfMatchesPerRound;
 		}		
-		
+
 		//loop to set every round .
 		for(int d = 1; d <= amountOfRounds; d++) {
 			Round r = new Round(d);
@@ -228,7 +237,7 @@ public class ArenaTournament {
 			for(int j : cycle) {
 				newListPlayers.add(players.get(j-1));
 			}
-			
+
 			// Loop in this round loop to set players in Matches.
 			for (int i = 0; i < amountOfMatchesPerRound; i++) {						
 				r.addMatch(newListPlayers.get(i), newListPlayers.get(amountOfPlayers - i - 1));
