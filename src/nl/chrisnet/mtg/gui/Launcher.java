@@ -25,6 +25,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.TextArea;
 import java.awt.TextField;
+import javax.swing.JScrollPane;
 
 public class Launcher{
 	private JTextArea roundGeneratedField;
@@ -35,7 +36,6 @@ public class Launcher{
 	private JTextPane errorLabel;
 	private JTextField amountPlayersTextField;
 	private JTable tablePoints;
-	private JTable tableMatches;
 
 	/**
 	 * Launch the application.
@@ -87,12 +87,10 @@ public class Launcher{
 		roundActionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent c) {
 				errorLabel.setText("");
-
 				try {
 					generateRoundsActionButton();
 				} catch (ArenaException e) {
 					JOptionPane.showMessageDialog(roundActionButton, e.getMessage());
-					//errorLabel.setText(e.getMessage());
 				}
 			}
 		});
@@ -144,29 +142,9 @@ public class Launcher{
 		errorLabel.setBackground(Color.WHITE);
 		errorLabel.setFont(new Font("Calibri", Font.PLAIN, 11));
 		errorLabel.setEditable(false);
-		tableMatches = new JTable();
-		tableMatches.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.CYAN, null));
-		tableMatches.setRowSelectionAllowed(false);
-		tableMatches.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-						"Round#", "Player 1", "Player 2", "Score"
-				}
-				) {
-			Class[] columnTypes = new Class[] {
-					Integer.class, String.class, String.class, Integer.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tableMatches.setFont(new Font("Times New Roman", Font.PLAIN, 11));
-		tableMatches.setBounds(252, 103, 417, 241);
-		frmMtgTool.getContentPane().add(tableMatches);
 
 		tablePoints = new JTable();
-		tablePoints.setBounds(722, 100, 152, 350);
+		tablePoints.setBounds(709, 110, 152, 350);
 		frmMtgTool.getContentPane().add(tablePoints);
 		tablePoints.setModel(new DefaultTableModel(
 				new Object[][] {
@@ -206,16 +184,19 @@ public class Launcher{
 		amountPlayersTextField.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		frmMtgTool.getContentPane().add(amountPlayersTextField);
 		amountPlayersTextField.setColumns(10);
-		
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(265, 110, 418, 260);
+		frmMtgTool.getContentPane().add(scrollPane);
+
 		roundGeneratedField = new JTextArea();
-		roundGeneratedField.setBounds(252, 343, 418, 110);
-		roundGeneratedField.setFont(new Font("Times New Roman", Font.PLAIN, 11));
+		scrollPane.setViewportView(roundGeneratedField);
+		roundGeneratedField.setFont(new Font("Verdana", Font.PLAIN, 12));
 		roundGeneratedField.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		roundGeneratedField.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.CYAN, null));
 		roundGeneratedField.setBackground(Color.WHITE);
 		roundGeneratedField.setEditable(false);
 		roundGeneratedField.setColumns(10);
-		frmMtgTool.getContentPane().add(roundGeneratedField);
 		frmMtgTool.setTitle("Chrisnet - MTG Tool");
 		frmMtgTool.setBackground(new Color(240, 240, 240));
 		frmMtgTool.setBounds(450, 100, 900, 600);
@@ -246,9 +227,7 @@ public class Launcher{
 		AddPlayerField.setText("");
 		amountPlayersTextField.setText(at.amountOfPlayers()+"");
 		DefaultTableModel model = (DefaultTableModel) tablePoints.getModel();
-		DefaultTableModel model2 = (DefaultTableModel) tableMatches.getModel();
 		model.setRowCount(0);
-		model2.setRowCount(0);
 	}
 
 	private void genTablePoints() {
@@ -261,23 +240,12 @@ public class Launcher{
 			model.addRow(new Object[]{playerName, playerPloints+""});
 		}
 	}				
-	
-	private void genTableMatches() {
-		//int selectedRowIndex = tableMatches.getSelectedRow();
-		DefaultTableModel model2 = (DefaultTableModel) tableMatches.getModel();
-		model2.setRowCount(0);
-		
-		for(int i=0;i<at.getMaxRounds();i++) {
-			model2.addRow(new Object[] {"Round "+ (i+1), at.printPlayer1(i+1, i), at.printPlayer2(i+1, i), 0});
-		}
-	}
-	
+
 	private void generateRoundsActionButton() throws ArenaException {
 		roundGeneratedField.setText("");
 		at.closeInscription();
 		printSchedual();
 		AddPlayerField.setText("");
-		genTableMatches();
 		genTablePoints();		
 	}
 
@@ -291,11 +259,17 @@ public class Launcher{
 	}
 
 	private void printSchedual() {
-		Iterator<String> it = at.getRounds().iterator();
-		roundGeneratedField.setText("");
-		while(it.hasNext()){
-			String element = it.next();
-			roundGeneratedField.append(element + "\n");
+		for(int i=1;i<=at.getRounds().size();i++) {
+			if(i==1) {
+			roundGeneratedField.append("Round : " + i + "\n");
+			}else {
+				roundGeneratedField.append("\n" + "Round : " + i + "\n");
+			}
+			Iterator<String> it = at.getMatches(i).iterator();
+			while(it.hasNext()){
+				String element = it.next();
+				roundGeneratedField.append(element + "\n");
+			}
 		}
 	}
 
