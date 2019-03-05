@@ -85,8 +85,9 @@ public class Launcher{
 
 		textArea = getTextArea();
 
-		JButton roundActionButton = new JButton("Generate Rounds");
-		roundActionButton.setBounds(264, 50, 133, 23);
+		JButton roundActionButton = new JButton("Start Tournament");
+		roundActionButton.setToolTipText("If you start Tournament you cant enter players anymore.");
+		roundActionButton.setBounds(10, 412, 145, 23);
 		roundActionButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		roundActionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent c) {
