@@ -16,16 +16,14 @@ import java.util.Iterator;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
 import javax.swing.JTextPane;
 import javax.swing.border.EtchedBorder;
 import java.awt.Cursor;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import java.awt.TextArea;
-import java.awt.TextField;
 import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import java.awt.Toolkit;
 
 public class Launcher{
 	private JTextArea roundGeneratedField;
@@ -36,6 +34,8 @@ public class Launcher{
 	private JTextPane errorLabel;
 	private JTextField amountPlayersTextField;
 	private JTable tablePoints;
+	private JTextField textFieldPoints;
+	private JComboBox comboBoxPlayers;
 
 	/**
 	 * Launch the application.
@@ -66,23 +66,27 @@ public class Launcher{
 	 */
 	private void initialize() {
 		frmMtgTool = new JFrame();
+		frmMtgTool.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\PKchr\\Pictures\\logo_favicon.png"));
+		frmMtgTool.getContentPane().setFont(new Font("Calibri", Font.PLAIN, 11));
 		frmMtgTool.getContentPane().setForeground(Color.RED);
 		frmMtgTool.getContentPane().setBackground(Color.WHITE);
 		frmMtgTool.getContentPane().setLayout(null);
 
 		AddPlayerField = new JTextField();
-		AddPlayerField.setBounds(10, 50, 133, 22);
+		AddPlayerField.setFont(new Font("Calibri", Font.PLAIN, 12));
+		AddPlayerField.setBounds(10, 50, 145, 22);
 		frmMtgTool.getContentPane().add(AddPlayerField);
 		AddPlayerField.setColumns(10);
 
 		JLabel lblPlayerList = new JLabel("Player List :");
+		lblPlayerList.setFont(new Font("Calibri", Font.PLAIN, 12));
 		lblPlayerList.setBounds(10, 81, 73, 18);
 		frmMtgTool.getContentPane().add(lblPlayerList);
 
 		textArea = getTextArea();
 
 		JButton roundActionButton = new JButton("Generate Rounds");
-		roundActionButton.setBounds(252, 51, 133, 23);
+		roundActionButton.setBounds(264, 50, 133, 23);
 		roundActionButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		roundActionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent c) {
@@ -99,7 +103,7 @@ public class Launcher{
 		frmMtgTool.getContentPane().add(roundActionButton);
 
 		JButton playerActionButton = new JButton("Add Player");
-		playerActionButton.setBounds(153, 50, 89, 23);
+		playerActionButton.setBounds(165, 50, 89, 23);
 		playerActionButton.setToolTipText("Fill in a Player name. You can not use spaces or add the same name.");
 		playerActionButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		playerActionButton.addActionListener(new ActionListener() {
@@ -121,8 +125,8 @@ public class Launcher{
 		playerActionButton.setFont(new Font("Calibri", Font.PLAIN, 11));
 		frmMtgTool.getContentPane().add(playerActionButton);
 
-		JButton clearPlayerList = new JButton("Clear All");
-		clearPlayerList.setBounds(153, 111, 89, 23);
+		JButton clearPlayerList = new JButton("Reset Tournament");
+		clearPlayerList.setBounds(10, 466, 145, 23);
 		clearPlayerList.setToolTipText("Clear all players and restart tournament.");
 		clearPlayerList.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		clearPlayerList.addActionListener(new ActionListener() {
@@ -144,7 +148,7 @@ public class Launcher{
 		errorLabel.setEditable(false);
 
 		tablePoints = new JTable();
-		tablePoints.setBounds(709, 110, 152, 350);
+		tablePoints.setBounds(709, 110, 145, 260);
 		frmMtgTool.getContentPane().add(tablePoints);
 		tablePoints.setModel(new DefaultTableModel(
 				new Object[][] {
@@ -163,25 +167,25 @@ public class Launcher{
 		tablePoints.setCellSelectionEnabled(true);
 		tablePoints.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.CYAN, null));
 		tablePoints.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		tablePoints.setFont(new Font("Times New Roman", Font.PLAIN, 11));
+		tablePoints.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 
 		JLabel copyRightLabel = new JLabel("Made posible by Chrisnet.nl \u00A9 2019");
-		copyRightLabel.setBounds(280, 528, 305, 22);
+		copyRightLabel.setBounds(280, 528, 193, 22);
 		copyRightLabel.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		frmMtgTool.getContentPane().add(copyRightLabel);
 
 		JLabel lblNewLabel = new JLabel("Total Players:");
 		lblNewLabel.setBounds(10, 381, 81, 14);
-		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		lblNewLabel.setFont(new Font("Calibri", Font.PLAIN, 12));
 		frmMtgTool.getContentPane().add(lblNewLabel);
 
 		amountPlayersTextField = new JTextField();
-		amountPlayersTextField.setBounds(84, 378, 59, 20);
+		amountPlayersTextField.setBounds(96, 378, 47, 20);
 		amountPlayersTextField.setText("0");
 		amountPlayersTextField.setBackground(Color.WHITE);
 		amountPlayersTextField.setBorder(null);
 		amountPlayersTextField.setEditable(false);
-		amountPlayersTextField.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		amountPlayersTextField.setFont(new Font("Calibri", Font.PLAIN, 12));
 		frmMtgTool.getContentPane().add(amountPlayersTextField);
 		amountPlayersTextField.setColumns(10);
 
@@ -197,6 +201,42 @@ public class Launcher{
 		roundGeneratedField.setBackground(Color.WHITE);
 		roundGeneratedField.setEditable(false);
 		roundGeneratedField.setColumns(10);
+
+		textFieldPoints = new JTextField();
+		textFieldPoints.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.CYAN, null));
+		textFieldPoints.setToolTipText("Set whole positive amount of Points");
+		textFieldPoints.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		textFieldPoints.setBounds(482, 412, 86, 20);
+		frmMtgTool.getContentPane().add(textFieldPoints);
+		textFieldPoints.setColumns(10);
+
+		JButton givePointButton = new JButton("Save Points");
+		givePointButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					addPointsButtonActions();
+				} catch (ArenaException e) {
+					JOptionPane.showMessageDialog(givePointButton, e.getMessage());
+				}
+			}
+		});
+		givePointButton.setFont(new Font("Calibri", Font.PLAIN, 11));
+		givePointButton.setBounds(578, 412, 105, 23);
+		frmMtgTool.getContentPane().add(givePointButton);
+
+		JLabel lblTournamentSchedual = new JLabel("Tournament Schedual :");
+		lblTournamentSchedual.setFont(new Font("Calibri", Font.PLAIN, 12));
+		lblTournamentSchedual.setBounds(264, 83, 138, 14);
+		frmMtgTool.getContentPane().add(lblTournamentSchedual);
+
+		JLabel lblPlayersScore = new JLabel("Players Score :");
+		lblPlayersScore.setFont(new Font("Calibri", Font.PLAIN, 12));
+		lblPlayersScore.setBounds(709, 82, 81, 14);
+		frmMtgTool.getContentPane().add(lblPlayersScore);
+
+		comboBoxPlayers = new JComboBox();
+		comboBoxPlayers.setBounds(264, 412, 209, 20);
+		frmMtgTool.getContentPane().add(comboBoxPlayers);
 		frmMtgTool.setTitle("Chrisnet - MTG Tool");
 		frmMtgTool.setBackground(new Color(240, 240, 240));
 		frmMtgTool.setBounds(450, 100, 900, 600);
@@ -211,7 +251,8 @@ public class Launcher{
 	private JTextArea getTextArea() {
 		if (textArea == null) {
 			textArea = new JTextArea();
-			textArea.setBounds(10, 110, 133, 260);
+			textArea.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+			textArea.setBounds(10, 110, 145, 260);
 			textArea.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			textArea.setEditable(false);
 			textArea.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.CYAN, null));
@@ -228,6 +269,7 @@ public class Launcher{
 		amountPlayersTextField.setText(at.amountOfPlayers()+"");
 		DefaultTableModel model = (DefaultTableModel) tablePoints.getModel();
 		model.setRowCount(0);
+		fillComboBoxPlayers();
 	}
 
 	private void genTablePoints() {
@@ -237,7 +279,9 @@ public class Launcher{
 		for(int i=0;i<=at.amountOfPlayers()-1;i++) {
 			String playerName = at.getAllPlayers().get(i);
 			int playerPloints = at.getPlayerPoints(playerName);
-			model.addRow(new Object[]{playerName, playerPloints+""});
+			if(playerName != "Bye") {
+				model.addRow(new Object[]{playerName, playerPloints+""});
+			}
 		}
 	}				
 
@@ -246,7 +290,8 @@ public class Launcher{
 		at.closeInscription();
 		printSchedual();
 		AddPlayerField.setText("");
-		genTablePoints();		
+		genTablePoints();
+		fillComboBoxPlayers();
 	}
 
 	private void addPlayerActionButton() throws ArenaException {
@@ -258,10 +303,19 @@ public class Launcher{
 		amountPlayersTextField.setText(at.amountOfPlayers()+"");
 	}
 
+	private void fillComboBoxPlayers() {
+		comboBoxPlayers.removeAllItems();
+		for(String p : at.getAllPlayers()) {
+			if(p != "Bye") {
+				comboBoxPlayers.addItem(p);			
+			}
+		}
+	}
+
 	private void printSchedual() {
 		for(int i=1;i<=at.getRounds().size();i++) {
 			if(i==1) {
-			roundGeneratedField.append("Round : " + i + "\n");
+				roundGeneratedField.append("Round : " + i + "\n");
 			}else {
 				roundGeneratedField.append("\n" + "Round : " + i + "\n");
 			}
@@ -271,6 +325,14 @@ public class Launcher{
 				roundGeneratedField.append(element + "\n");
 			}
 		}
+	}
+
+	private void addPointsButtonActions() throws ArenaException{
+		String player = (String) comboBoxPlayers.getSelectedItem();
+		String points = textFieldPoints.getText();
+		at.setPointsToPlayer(player, points);
+		textFieldPoints.setText("");
+		genTablePoints();
 	}
 
 	private void printPlayerList() {
