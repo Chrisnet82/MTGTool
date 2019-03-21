@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.Component;
 import java.util.Iterator;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
@@ -36,6 +37,7 @@ public class Launcher{
 	private JTable tablePoints;
 	private JTextField textFieldPoints;
 	private JComboBox comboBoxPlayers;
+	private JButton givePointButton;
 
 	/**
 	 * Launch the application.
@@ -119,7 +121,6 @@ public class Launcher{
 					addPlayerActionButton();
 				}catch(ArenaException exception) {
 					JOptionPane.showMessageDialog(playerActionButton, exception.getMessage());
-					//errorLabel.setText(exception.getMessage());
 				}
 			}
 		});
@@ -211,14 +212,15 @@ public class Launcher{
 		frmMtgTool.getContentPane().add(textFieldPoints);
 		textFieldPoints.setColumns(10);
 
-		JButton givePointButton = new JButton("Save Points");
+		givePointButton = new JButton("Save Points");
+		givePointButton.setEnabled(false);
 		givePointButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					addPointsButtonActions();
-				} catch (ArenaException e) {
-					JOptionPane.showMessageDialog(givePointButton, e.getMessage());
-				}
+					try {
+						addPointsButtonActions();
+					} catch (ArenaException e) {
+						JOptionPane.showMessageDialog(givePointButton, e.getMessage());
+					}
 			}
 		});
 		givePointButton.setFont(new Font("Calibri", Font.PLAIN, 11));
@@ -271,6 +273,7 @@ public class Launcher{
 		DefaultTableModel model = (DefaultTableModel) tablePoints.getModel();
 		model.setRowCount(0);
 		fillComboBoxPlayers();
+		givePointButton.setEnabled(false);
 	}
 
 	private void genTablePoints() {
@@ -293,6 +296,7 @@ public class Launcher{
 		AddPlayerField.setText("");
 		genTablePoints();
 		fillComboBoxPlayers();
+		givePointButton.setEnabled(true);
 	}
 
 	private void addPlayerActionButton() throws ArenaException {
