@@ -225,10 +225,10 @@ public class Launcher{
 		givePointButton.setBounds(578, 412, 105, 23);
 		frmMtgTool.getContentPane().add(givePointButton);
 
-		JLabel lblTournamentSchedual = new JLabel("Tournament Schedual :");
-		lblTournamentSchedual.setFont(new Font("Calibri", Font.PLAIN, 12));
-		lblTournamentSchedual.setBounds(264, 83, 138, 14);
-		frmMtgTool.getContentPane().add(lblTournamentSchedual);
+		JLabel lblTournamentSchedule = new JLabel("Tournament Schedule :");
+		lblTournamentSchedule.setFont(new Font("Calibri", Font.PLAIN, 12));
+		lblTournamentSchedule.setBounds(264, 83, 138, 14);
+		frmMtgTool.getContentPane().add(lblTournamentSchedule);
 
 		JLabel lblPlayersScore = new JLabel("Players Score :");
 		lblPlayersScore.setFont(new Font("Calibri", Font.PLAIN, 12));

@@ -206,7 +206,7 @@ public class ArenaTournament {
 			checkPlayerSize();
 			AddByePlayerIfNeeded();
 			setMaxRounds();
-			scheduleTournamentTest(players);
+			scheduleTournament(players);
 		}
 
 		/**
@@ -274,7 +274,7 @@ public class ArenaTournament {
 		 * @return List of Rounds and Matches.
 		 * @resource https://sites.google.com/site/mywaydevilsway/round-robin-scheduling-algorithm 
 		 */
-		public ArrayList<Round> scheduleTournamentTest(ArrayList<Player> players) {
+		public ArrayList<Round> scheduleTournament(ArrayList<Player> players) {
 			int amountOfPlayers = players.size();
 			int amountOfRounds = players.size()-1;
 
