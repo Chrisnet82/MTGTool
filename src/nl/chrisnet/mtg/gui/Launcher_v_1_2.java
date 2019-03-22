@@ -18,6 +18,8 @@ import javax.swing.JLabel;
 import java.awt.Dimension;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.Color;
+import java.awt.SystemColor;
 
 public class Launcher_v_1_2 {
 
@@ -70,7 +72,7 @@ public class Launcher_v_1_2 {
 		panelPlayers.add(playerAddButton);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(347, 60, 176, 362);
+		scrollPane.setBounds(347, 60, 176, 333);
 		panelPlayers.add(scrollPane);
 		
 		JTextArea textArea = new JTextArea();
@@ -86,6 +88,26 @@ public class Launcher_v_1_2 {
 		AddPlayerField.setColumns(10);
 		AddPlayerField.setBounds(10, 63, 145, 22);
 		panelPlayers.add(AddPlayerField);
+		
+		JLabel amountPlayersLabel = new JLabel("Amount of Players :");
+		amountPlayersLabel.setBounds(347, 404, 108, 14);
+		panelPlayers.add(amountPlayersLabel);
+		
+		JLabel intPlayersLabel = new JLabel("0");
+		intPlayersLabel.setBounds(451, 404, 46, 14);
+		panelPlayers.add(intPlayersLabel);
+		
+		JTextArea txtrInThisTab = new JTextArea();
+		txtrInThisTab.setBackground(SystemColor.control);
+		txtrInThisTab.setFont(new Font("Monospaced", Font.PLAIN, 10));
+		txtrInThisTab.setText("In this tab, you manage your players before \r\nstarting the tournament.\r\nType in a name of a player and use the \r\n\"Add Player\" button to add a player.\r\n\r\nA name must consist only out of \r\nletters or numbers. Name may not \r\nuse spaces or other special characters.\r\nIf succesfull added, the name wil appear\r\nin the playerlist on the right.\r\nIf you have enterd all the players,\r\nyou can start the tournament.\r\nAfther starting you cant add anymore players.\r\n\r\n\r\nThank you for using the ArenaTournament Tool.");
+		txtrInThisTab.setEditable(false);
+		txtrInThisTab.setBounds(10, 128, 304, 232);
+		panelPlayers.add(txtrInThisTab);
+		
+		JLabel lblNewLabel = new JLabel("Made posible by Chrisnet.nl \u00A9 2019");
+		lblNewLabel.setBounds(10, 404, 187, 14);
+		panelPlayers.add(lblNewLabel);
 		
 		JPanel panelSchedule = new JPanel();
 		tabbedPane.addTab("               Schedule               ", null, panelSchedule, null);
